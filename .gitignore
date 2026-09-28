@@ -11,6 +11,9 @@ dsh-web-url.txt
 grant-qr.png
 logs/
 
+# Portable repo snapshots, for moving the history to another machine
+*.bundle
+
 # Editor / OS noise
 .vscode/
 .idea/

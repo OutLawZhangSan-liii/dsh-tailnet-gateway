@@ -1,5 +1,10 @@
 # dsh-tailnet-gateway
 
+[![dsh-plugin](https://img.shields.io/badge/topic-dsh--plugin-CB3837)](https://github.com/topics/dsh-plugin)
+[![DeepSeek Harness](https://img.shields.io/badge/DeepSeek-Harness-4D6BFE)](https://github.com/deepseek-ai/deepseek-harness)
+[![Tailscale](https://img.shields.io/badge/Tailscale-remote%20access-24292F)](https://tailscale.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Control the DeepSeek Harness running on your own computer from your phone — or
 any other device on your private [Tailscale](https://tailscale.com) network —
 **without exposing dsh, your LAN, or the public internet.**

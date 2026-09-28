@@ -196,6 +196,68 @@ Add it to the home screen. The cookie lasts 30 days and **survives `dsh web`
 restarts**, because the signing secret is durable — you do not need a token
 again on that device.
 
+## The 30-day expiry, and what to do about it
+
+The session cookie is an **absolute** 30-day credential. It is not a sliding
+window: using the app every day does not extend it. On day 31 that browser gets
+the 401 page again.
+
+### What you will see
+
+The 401 page reading `dsh web authentication required; reopen the URL printed by
+dsh web`. Nothing is broken and nothing is lost — the browser simply has no
+valid session any more. Conversations, workspaces and settings are all server
+side and unaffected.
+
+### What to do (one command, per device)
+
+Re-run the grant tool and open the new link **in that device's browser**:
+
+```powershell
+$env:DSH_TAILNET_ORIGIN = 'https://<machine>.<tailnet>.ts.net'
+node grant-access.mjs
+```
+
+It prints a fresh one-shot link and writes `grant-qr.png`. Scan the QR (the iOS
+Camera app opens it in Safari) or open the link directly, and the device is good
+for another 30 days. Repeat per device — cookies are per-browser, and each
+device holds its own.
+
+**If the grant route is no longer published**, re-attach it first:
+
+```powershell
+tailscale serve --bg --set-path=/grant http://127.0.0.1:7245
+```
+
+### Choosing a different lifetime
+
+```powershell
+node grant-access.mjs --days 90      # longer: less renewal, bigger blast radius
+node grant-access.mjs --days 7       # shorter: more renewal, smaller blast radius
+```
+
+The trade is the usual one for a bearer credential: the cookie is
+`HttpOnly` + `SameSite=Strict` and travels inside TLS, but anyone holding it can
+act as you for its whole lifetime. It is stored per-browser, so it cannot be
+revoked on one device only — see below.
+
+### Revoking early
+
+There is no per-device logout. dsh's own model is that the browser cookie is
+signed with the owner-scoped `client-connection/browser-session` record, so the
+way to invalidate **every** device at once is to make that record stop matching:
+
+1. Stop dsh.
+2. Delete the `client-connection/browser-session` record from
+   `%USERPROFILE%\.dsh\.credentials.yaml`.
+3. Start dsh. A new signing secret is created on activation, and every existing
+   cookie fails signature verification.
+4. Re-grant each device you still want.
+
+Note that dsh reads this record once during Connection activation, so step 3 is
+required — deleting it while dsh runs does not revoke anything until the next
+start.
+
 ## Configuration
 
 | Key | Default | Meaning |

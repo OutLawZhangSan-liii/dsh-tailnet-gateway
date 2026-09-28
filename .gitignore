@@ -1,0 +1,19 @@
+# Dependencies. `qrcode` is optional (used only for the QR convenience in
+# grant-access.mjs); the tool runs without it.
+node_modules/
+package-lock.json
+
+# Runtime artifacts that carry credentials or noise:
+#   dsh-web-url.txt  holds the tokenized launch URL — a bearer credential
+#   grant-qr.png     is a QR of a one-shot session grant link
+#   logs/            dsh stdout, which contains the tokenized URL
+dsh-web-url.txt
+grant-qr.png
+logs/
+
+# Editor / OS noise
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+*.swp

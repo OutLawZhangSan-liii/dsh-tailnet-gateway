@@ -1,0 +1,9 @@
+# Normalize line endings in the repository, so a Windows checkout does not
+# rewrite every file and produce spurious diffs.
+* text=auto eol=lf
+
+# PowerShell scripts are most reliable with Windows line endings.
+*.ps1 text eol=crlf
+
+# Binary
+*.png binary

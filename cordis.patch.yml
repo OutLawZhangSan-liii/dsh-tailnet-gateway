@@ -1,0 +1,16 @@
+# Bundle patch for dsh-tailnet-gateway.
+#
+# This file is used when the package is installed as a DSH *bundle* (via
+# `dsh plugin --profile web add <package>`). A bundle contributes its plugin
+# row to the profile automatically, so the row id below is the one the
+# user-facing patch layer can target with a config override:
+#
+#   - id: tailnet-gateway
+#     config:
+#       allowedPeers: ['100.64.0.7']
+#
+# Mounting the same plugin directly from a profile patch needs no bundle: add
+# the package directory to the profile's own cordis.patch.yml instead.
+- insert:
+    - id: tailnet-gateway
+      name: dsh-tailnet-gateway
